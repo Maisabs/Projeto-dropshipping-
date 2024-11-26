@@ -1,0 +1,44 @@
+-- Tabela de Clientes
+CREATE TABLE IF NOT EXISTS clientes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    telefone VARCHAR(20),
+    endereco TEXT
+);
+
+-- Tabela de Fornecedores
+CREATE TABLE IF NOT EXISTS fornecedores (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    contato VARCHAR(100),
+    endereco TEXT
+);
+
+-- Tabela de Produtos
+CREATE TABLE IF NOT EXISTS produtos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    descricao TEXT,
+    preco DECIMAL(10, 2),
+    quantidade_estoque INT,
+    fornecedor_id INT REFERENCES fornecedores(id)
+);
+
+-- Tabela de Pedidos
+CREATE TABLE IF NOT EXISTS pedidos (
+    id SERIAL PRIMARY KEY,
+    cliente_id INT REFERENCES clientes(id),
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50),
+    total DECIMAL(10, 2)
+);
+
+-- Tabela de Itens de Pedidos
+CREATE TABLE IF NOT EXISTS itens_pedido (
+    id SERIAL PRIMARY KEY,
+    pedido_id INT REFERENCES pedidos(id),
+    produto_id INT REFERENCES produtos(id),
+    quantidade INT,
+    preco DECIMAL(10, 2)
+);
